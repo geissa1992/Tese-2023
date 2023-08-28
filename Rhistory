@@ -1,0 +1,239 @@
+install.packages("basedosdados")
+library("basedosdados")
+library("basedosdados")
+# Defina o seu projeto no Google Cloud
+set_billing_id("<YOUR_PROJECT_ID>")
+# Para carregar o dado direto no R
+query <- bdplyr("br_me_cnpj.empresas")
+# Para carregar o dado direto no R
+query <- bdplyr("br_me_cnpj.empresas")
+df <- bd_collect(query)
+# Defina o seu projeto no Google Cloud
+set_billing_id("<YOUR_PROJECT_ID>")
+# Para carregar o dado direto no R
+query <- bdplyr("br_ms_sinasc.microdados")
+# Defina o seu projeto no Google Cloud
+set_billing_id("<YOUR_PROJECT_ID>")
+# Defina o seu projeto no Google Cloud
+set_billing_id("idyllic-anvil-381915")
+# Para carregar o dado direto no R
+query <- bdplyr("br_ms_sinasc.microdados")
+df <- bd_collect(query)
+library(dplyr)
+library(dbplyr)
+library(dtplyr)
+detach("package:dtplyr", unload = TRUE)
+# Para carregar o dado direto no R
+query <- bdplyr("br_ms_sinasc.microdados")
+df <- bd_collect(query)
+install.packages("bdplyr")
+library(rprojroot)
+# Para carregar o dado direto no R
+query <- bdplyr("br_ms_sinasc.microdados")
+# Defina o seu projeto no Google Cloud
+set_billing_id("<idyllic-anvil-381915>")
+# Para carregar o dado direto no R
+query <- bdplyr("br_tse_eleicoes.bens_candidato")
+df <- bd_collect(query)
+# Defina o seu projeto no Google Cloud
+set_billing_id("idyllic-anvil-381915")
+# Para carregar o dado direto no R
+query <- bdplyr("br_tse_eleicoes.bens_candidato")
+# Defina o seu projeto no Google Cloud
+set_billing_id("idyllic-anvil-381915")
+# Para carregar o dado direto no R
+query <- bdplyr("br_tse_eleicoes.bens_candidato")
+install.packages("igraph")
+library(igraph)
+g <- graph.formula(
+Regina --+ Francisco,
+Maria +-- Sandra,
+Pedro --+ Francisco,
+Paulo --+ Francisco +-- Cristina,
+Maria +-- Manoel +-- Carlos,
+Ana --+ Paulo --+ Carlos,
+Manoel --+ Aline +-+ Sandra +-- Helena,
+Paulo --+ Manoel +-- Ana,
+Francisco --+ Maria
+)
+plot(g)
+tkp <- tkplot(g)
+g.coord <- tkplot.getcoords(tkp)
+g <- set.graph.attribute(g, "layout", value = g.coord)
+set.seed(333)
+g <- set.graph.attribute(g, "layout",
+value = layout.fruchterman.reingold(g))
+nomes <- get.vertex.attribute(g, "name")
+g <- set.vertex.attribute(g, "label", value = nomes)
+g <- set.vertex.attribute(g, "size", value = 6)
+g <- set.vertex.attribute(g, "label.dist", value = 0.7)
+g <- set.edge.attribute(g, "arrow.size", value = 0.5)
+cores <- heat.colors(5)
+proxi <- closeness(g)
+proxi.max <- max(proxi)
+cores.p <- 5 - round(4 *(proxi / proxi.max))
+cores.p <- cores[cores.p]
+inter <- betweenness(g)
+inter.max <- max(inter)
+cores.i <- 5 - round(4 *(inter / inter.max))
+cores.i <- cores[cores.i]
+par(mfrow = c(1, 2), mar = c(0, 0, 1, 2) + 0.1, cex = 0.7, xpd = TRUE)
+plot(g, vertex.color = cores.p, main = "Proximidade")
+par(mar = c(0, 1, 1, 1) + 0.1)
+plot(g, vertex.color = cores.i, main = "Intermediação")
+central <- degree(g, mode = "in")
+central.max <- max(central)
+cores.c <- 5 - round(4 * (central / central.max))
+cores.c <- cores[cores.c]
+try(alfa <- alpha.centrality(g, alpha = 0.5))
+if(exists("alfa")){
+alfa.min <- min(alfa)
+if(alfa.min < 0)
+alfa.min <- alfa.min * (-1)
+alfa2 <- alfa + alfa.min
+alfa2.max <- max(alfa2)
+cores.a <- 5 - round(4 * (alfa2 / alfa2.max))
+cores.a <- cores[cores.a]
+}
+par(mfrow = c(1, 2), mar = c(0, 0, 1, 2) + 0.1, cex = 0.7, xpd = TRUE)
+plot(g, vertex.color = cores.c, main = "Centralidade")
+par(mar = c(0, 1, 1, 1) + 0.1)
+if(exists("alfa"))
+plot(g, vertex.color = cores.a, main = "Centralidade alfa")
+g.undir <- as.undirected(g)
+g.mc <- largest.cliques(g.undir)
+g.mc
+# [[1]]
+# [1] 10 6 8
+#
+# [[2]]
+# [1] 9 6 8
+nomes[g.mc[[1]]]
+# [[1]]
+# [1] 10 6 8
+#
+# [[2]]
+# [1] 9 6 8
+nomes[g.mc[[1]]]
+wtc <- membership(walktrap.community(g))
+wtc12 <- membership(walktrap.community(g, steps = 12))
+palette(c("red", "green", "lightblue", "darkgreen"))
+par(mfrow = c(1, 2), mar = c(0, 0, 1, 2) + 0.1, cex = 0.7, xpd = TRUE)
+plot(g, vertex.color = wtc)
+par(mar = c(0, 1, 1, 1) + 0.1)
+plot(g, vertex.color = wtc12)
+sgc <- membership(spinglass.community(g))
+sgc2 <- membership(spinglass.community(g, spins = 2))
+sgc.g <- list(grep("1", sgc), grep("2", sgc), grep("3", sgc))
+palette(c("red", "green", "lightblue", "snow2", "beige", "wheat1"))
+par(mfrow = c(1, 2), mar = c(0, 0, 1, 2) + 0.1, cex = 0.7, xpd = TRUE)
+plot(g, vertex.color = sgc2)
+par(mar = c(0, 1, 1, 1) + 0.1)
+plot(g, vertex.color = sgc, mark.groups = sgc.g, mark.col = 6:4)
+par(mfrow = c(1, 1), cex = 1.0, mar = c(5.1, 4.1, 4.1, 2.1))
+library(sjPlot)
+library(sjPlot)
+setwd("G:/Meu Drive/Assessorias 2022/Modelos - Geissa")
+library(readxl)
+banco_tese_geissa_MAIO_2023 <- read_excel("banco.tese.geissa.MAIO.2023.xlsx",
+sheet = "Deputados e Deputadas")
+View(banco_tese_geissa_MAIO_2023)
+banco_tese$AproNum <-  recode(banco_tese$Aprovado,
+0 <- "Não", 1 <- "Sim")
+# Não   Sim
+# 63026  1171
+#rodar####
+library(memisc)
+banco_tese$AproNum <-  recode(banco_tese$Aprovado,
+0 <- "Não", 1 <- "Sim")
+banco_tese <- banco_tese_geissa_MAIO_2023
+table(banco_tese$Aprovado)
+banco_tese$AproNum <-  recode(banco_tese$Aprovado,
+0 <- "Não", 1 <- "Sim")
+table(banco_tese$AproNum)
+table(banco_tese$Sexo)
+#pacote para criação das tabelas dos modelos
+#install.packages("sjPlot")
+library(sjPlot)
+modelo <- glm(AproNum ~ Sexo, data = banco_tese,
+family = binomial(link = logit))
+tab_model(modelo, show.ci = F, auto.label = T,
+show.se = F, collapse.ci = F,
+wrap.labels = 60, p.style = "stars")
+modelo <- glm(AproNum ~ Sexo + Seniority.anos +
+Seniority.legislatura +
+Mesa.diretora+
+Presidencia.comissao.espe+
+Cargo.chave.geral+
+Mais.um.cargo, data = banco_tese,
+family = binomial(link = logit))
+tab_model(modelo, show.ci = F, auto.label = T,
+show.se = F, collapse.ci = F,
+wrap.labels = 60, p.style = "stars")
+modelo <- glm(AproNum ~ Seniority.anos +
+Seniority.legislatura +
+Mesa.diretora+
+Presidencia.comissao.espe+
+Cargo.chave.geral+
+Mais.um.cargo, data = banco_tese,
+family = binomial(link = logit))
+tab_model(modelo, show.ci = F, auto.label = T,
+show.se = F, collapse.ci = F,
+wrap.labels = 60, p.style = "stars")
+modelo <- glm(AproNum ~ Seniority.anos +
+Mesa.diretora+
+Presidencia.comissao.espe+
+Cargo.chave.geral+
+Mais.um.cargo, data = banco_tese,
+family = binomial(link = logit))
+tab_model(modelo, show.ci = F, auto.label = T,
+show.se = F, collapse.ci = F,
+wrap.labels = 60, p.style = "stars")
+tab <- table(banco_tese$Aprovado, banco_tese$Sexo)
+chisq.test(tab)
+#QUI-QUADRADO####
+#Realização do qui-quadrado para testar a relação entre
+#o sexo e a aprovação
+options(scipen = 999)
+chisq.test(tab)
+tab <- table(banco_tese$Aprovado, banco_tese$Sexo)
+table(banco_tese$Aprovado, banco_tese$Sexo)
+chisq.test(tab)
+tab2 <- table(banco_tese$Tema.mulheres,
+banco_tese$Sexo)
+chisq.test(tab2)
+#rodar####
+table(banco_tese$Tema.mulheres)
+banco_tese$TemaM.Num <-  recode(banco_tese$Tema.mulheres,
+0 <- "Nao", 1 <- "Sim")
+table(banco_tese$TemaM.Num)
+modelo1 <- glm(TemaM.Num ~ Sexo,
+data = banco_tese,
+family = binomial(link = logit))
+tab_model(modelo1, show.ci = F, auto.label = T,
+show.se = F, collapse.ci = F,
+wrap.labels = 60, p.style = "stars")
+#Apresentação do resultado de maneira gráfica
+#install.packages("coefplot")
+library(coefplot)
+install.packages("coefplot")
+#Apresentação do resultado de maneira gráfica
+#install.packages("coefplot")
+library(coefplot)
+table(banco_tese$Sexo)
+obj1 <- coefplot(modelo1, title = "Tema mulher",
+xlab = "Valor",
+ylab = "Coefficient",
+color = "black",
+outerCI = F,
+innerCI = 3,
+intercept = F)
+obj1 + theme_classic() +
+geom_point(size=3, pch=21, fill="red",
+alpha=105) +
+theme(text = element_text(family = "serif", size = 13),
+rect = element_blank(),
+panel.grid = element_blank(),
+title = element_text(color = "black"),
+axis.line = element_line(color = "black")) +
+theme(legend.position="none")
